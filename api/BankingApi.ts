@@ -6,7 +6,16 @@ export class BankingApi {
 
   constructor(request: APIRequestContext) {
     this.request = request;
-    this.baseUrl = process.env.API_BASE_URL!;
+
+    const apiBaseUrl = process.env.API_BASE_URL;
+
+    if (!apiBaseUrl) {
+      throw new Error(
+        'API_BASE_URL environment variable is not configured'
+      );
+    }
+
+    this.baseUrl = apiBaseUrl;
   }
 
   async getAccounts(customerId: number) {
