@@ -50,7 +50,8 @@ export class DatabaseHelper {
   close(): void {
     this.db.close();
   }
-    getAccountsByCustomerId(customerId: number) {
+
+  getAccountsByCustomerId(customerId: number) {
     const statement = this.db.prepare(`
       SELECT *
       FROM accounts
