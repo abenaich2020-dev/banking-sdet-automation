@@ -4,29 +4,29 @@ import { loginData } from '../test-data/loginData';
 import { accountData } from '../test-data/accountData';
 
 test.describe('Banking Application - UI and API Integration', () => {
-
   test('should verify customer accounts through UI and API', async ({
     request,
     loginPage,
     accountsPage,
   }) => {
-
     // Step 1: Login through the UI
     await loginPage.navigate();
 
     await loginPage.login(
       loginData.validUser.username,
-      loginData.validUser.password
+      loginData.validUser.password,
     );
 
     // Step 2: Verify Accounts Overview page
     await accountsPage.verifyAccountsOverviewIsDisplayed();
 
+    const uiAccountNumber = await accountsPage.getFirstAccountNumber();
+
     // Step 3: Get customer accounts through the API
     const bankingApi = new BankingApi(request);
 
     const response = await bankingApi.getAccounts(
-      accountData.validCustomer.customerId
+      accountData.validCustomer.customerId,
     );
 
     expect(response.status()).toBe(200);
@@ -37,10 +37,11 @@ test.describe('Banking Application - UI and API Integration', () => {
     expect(Array.isArray(accounts)).toBeTruthy();
     expect(accounts.length).toBeGreaterThan(0);
 
-    // Step 5: Verify the customer ID from the API
-    expect(accounts[0].customerId).toBe(
-      accountData.validCustomer.customerId
+    // Step 5: Verify UI account exists in API response
+    const accountExistsInApi = accounts.some(
+      (account: { id: number }) => account.id.toString() === uiAccountNumber,
     );
-  });
 
+    expect(accountExistsInApi).toBeTruthy();
+  });
 });
