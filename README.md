@@ -14,6 +14,7 @@ Playwright and TypeScript test automation framework for testing a banking web ap
 * Git / GitHub
 * GitHub Actions
 * HTML Test Reporting
+* axe-core Accessibility Testing
 
 ## Project Structure
 
@@ -35,11 +36,13 @@ banking-sdet-automation/
 │   ├── accountData.ts
 │   └── loginData.ts
 │
+├── accessibility/
+│   └── accessibility.spec.ts
+│
 ├── tests/
 │   ├── account-integration.spec.ts
 │   ├── api.spec.ts
 │   ├── database.spec.ts
-│   ├── example.spec.ts
 │   ├── login.spec.ts
 │   └── open-account.spec.ts
 │
@@ -78,6 +81,13 @@ The framework is organized to support multiple layers of testing.
 
 * Database connectivity and validation
 * Application and database integration testing
+
+### Accessibility Testing
+
+* Automated accessibility scanning using axe-core with Playwright
+* WCAG 2.0 and WCAG 2.1 A/AA validation
+* Accessibility testing across Login, Accounts Overview, and Open New Account workflows
+* Cross-browser accessibility execution with Chromium, Firefox, and WebKit
 
 ### Test Infrastructure
 
@@ -168,6 +178,7 @@ This project demonstrates practical SDET automation experience with:
 * UI test automation
 * API testing
 * Database validation
+* Accessibility testing with axe-core
 * TypeScript development
 * Playwright framework design
 * Page Object Model
