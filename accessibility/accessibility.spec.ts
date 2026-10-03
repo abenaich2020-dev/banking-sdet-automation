@@ -1,21 +1,21 @@
-import { test, expect } from '../fixtures/testFixtures';
-import AxeBuilder from '@axe-core/playwright';
-import { loginData } from '../test-data/loginData';
+import { test, expect } from "../fixtures/testFixtures";
+import AxeBuilder from "@axe-core/playwright";
+import { loginData } from "../test-data/loginData";
 
-test.describe('Banking Application - Accessibility', () => {
-  test('should scan the login page for WCAG accessibility violations', async ({
+test.describe("Banking Application - Accessibility", () => {
+  test("should scan the login page for WCAG accessibility violations", async ({
     page,
   }) => {
-    await page.goto('https://parabank.parasoft.com/parabank/index.htm');
+    await page.goto("/");
 
     const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
       .analyze();
 
     expect(accessibilityScanResults.violations).toBeDefined();
   });
 
-  test('should scan the Accounts Overview page for WCAG accessibility violations', async ({
+  test("should scan the Accounts Overview page for WCAG accessibility violations", async ({
     page,
     loginPage,
     accountsPage,
@@ -30,13 +30,13 @@ test.describe('Banking Application - Accessibility', () => {
     await accountsPage.verifyAccountsOverviewIsDisplayed();
 
     const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
       .analyze();
 
     expect(accessibilityScanResults.violations).toBeDefined();
   });
 
-  test('should scan the Open New Account page for WCAG accessibility violations', async ({
+  test("should scan the Open New Account page for WCAG accessibility violations", async ({
     page,
     loginPage,
     accountsPage,
@@ -54,7 +54,7 @@ test.describe('Banking Application - Accessibility', () => {
     await openAccountPage.openNewAccount();
 
     const accessibilityScanResults = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
       .analyze();
 
     expect(accessibilityScanResults.violations).toBeDefined();
