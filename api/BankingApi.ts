@@ -1,4 +1,4 @@
-import { APIRequestContext } from '@playwright/test';
+import { APIRequestContext } from "@playwright/test";
 
 export class BankingApi {
   readonly request: APIRequestContext;
@@ -10,9 +10,7 @@ export class BankingApi {
     const apiBaseUrl = process.env.API_BASE_URL;
 
     if (!apiBaseUrl) {
-      throw new Error(
-        'API_BASE_URL environment variable is not configured'
-      );
+      throw new Error("API_BASE_URL environment variable is not configured");
     }
 
     this.baseUrl = apiBaseUrl;
@@ -23,9 +21,17 @@ export class BankingApi {
       `${this.baseUrl}/customers/${customerId}/accounts`,
       {
         headers: {
-          Accept: 'application/json',
+          Accept: "application/json",
         },
-      }
+      },
     );
+  }
+
+  async getAccount(accountId: string) {
+    return await this.request.get(`${this.baseUrl}/accounts/${accountId}`, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
   }
 }
