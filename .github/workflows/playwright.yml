@@ -73,6 +73,7 @@ jobs:
           image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           format: spdx-json
           output-file: sbom.spdx.json
+          config: .syft.yaml
 
       - name: Log in to GitHub Container Registry
         if: github.event_name == 'push'
