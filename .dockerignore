@@ -3,3 +3,5 @@ playwright-report
 test-results
 .git
 .env
+allure-results
+allure-report

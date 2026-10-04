@@ -6,5 +6,6 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 RUN npm install -g npm@12.2.0
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci \
+    && npm uninstall allure-commandline --no-save
 COPY . .
