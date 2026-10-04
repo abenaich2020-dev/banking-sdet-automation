@@ -1,0 +1,16 @@
+# npm 12.2.0 bundled dependencies - awaiting upstream npm update
+CVE-2026-102276
+CVE-2026-102278
+CVE-2026-19534
+
+# TypeScript 7.0.2 native compiler - awaiting stable upstream rebuild
+CVE-2026-56852
+CVE-2026-33818
+CVE-2026-39821
+CVE-2026-39822
+CVE-2026-46600
+CVE-2026-56853
+CVE-2026-56858
+CVE-2026-56859
+CVE-2026-56860
+CVE-2026-56862
