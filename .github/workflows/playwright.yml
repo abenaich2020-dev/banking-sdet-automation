@@ -71,8 +71,8 @@ jobs:
         uses: anchore/sbom-action@v0
         with:
           image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          format: spdx-json
-          output-file: sbom.spdx.json
+          format: cyclonedx-json
+          output-file: sbom.cyclonedx.json
           config: .syft.yaml
 
       - name: Log in to GitHub Container Registry
@@ -105,7 +105,7 @@ jobs:
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
-          sbom-path: sbom.spdx.json
+          sbom-path: sbom.cyclonedx.json
           push-to-registry: true
 
       - name: Upload Playwright report
