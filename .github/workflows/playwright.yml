@@ -40,6 +40,9 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test
 
+      - name: Build Docker image
+        run: docker build -t banking-sdet-automation .
+
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v7
