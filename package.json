@@ -8,7 +8,8 @@
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "typecheck": "tsc --noEmit",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "report:allure": "allure generate allure-results --clean -o allure-report"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,8 @@
     "@playwright/test": "^1.63.0",
     "@types/better-sqlite3": "^9.6.0",
     "@types/node": "^26.6.3",
+    "allure-commandline": "^2.46.1",
+    "allure-playwright": "^3.13.0",
     "typescript": "^7.0.2"
   },
   "dependencies": {
