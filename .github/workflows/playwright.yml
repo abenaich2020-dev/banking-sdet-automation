@@ -52,6 +52,7 @@ jobs:
           ignore-unfixed: true
           vuln-type: "os,library"
           severity: "HIGH,CRITICAL"
+          scanners: "vuln"
 
       - name: Upload Playwright report
         if: always()
