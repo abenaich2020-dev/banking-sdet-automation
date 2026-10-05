@@ -1,4 +1,4 @@
-import { APIRequestContext } from "@playwright/test";
+import { APIRequestContext, APIResponse } from "@playwright/test";
 
 export class BankingApi {
   readonly request: APIRequestContext;
@@ -15,9 +15,16 @@ export class BankingApi {
 
     this.baseUrl = apiBaseUrl;
   }
+  private async checkForRateLimit(response: APIResponse): Promise<void> {
+    if (response.status() === 429) {
+      throw new Error(
+        "ParaBank API returned HTTP 429 Too Many Requests. The public test environment is rate limiting requests.",
+      );
+    }
+  }
 
   async getAccounts(customerId: number) {
-    return await this.request.get(
+    const response = await this.request.get(
       `${this.baseUrl}/customers/${customerId}/accounts`,
       {
         headers: {
@@ -25,13 +32,24 @@ export class BankingApi {
         },
       },
     );
+
+    await this.checkForRateLimit(response);
+
+    return response;
   }
 
   async getAccount(accountId: string) {
-    return await this.request.get(`${this.baseUrl}/accounts/${accountId}`, {
-      headers: {
-        Accept: "application/json",
+    const response = await this.request.get(
+      `${this.baseUrl}/accounts/${accountId}`,
+      {
+        headers: {
+          Accept: "application/json",
+        },
       },
-    });
+    );
+
+    await this.checkForRateLimit(response);
+
+    return response;
   }
 }
