@@ -7,7 +7,7 @@ on:
       - completed
 
 permissions:
-  contents: read
+  contents: write
   actions: read
   pages: write
   id-token: write
@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion != 'cancelled' }}
+    if: ${{ github.event.workflow_run.head_repository.full_name == github.repository && (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure') }}
     runs-on: ubuntu-latest
 
     environment:
@@ -34,13 +34,69 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Restore archived reports
+        run: |
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+            git fetch origin gh-pages:refs/remotes/origin/gh-pages
+            git worktree add --detach previous-site refs/remotes/origin/gh-pages
+
+            if [ -d previous-site/reports ]; then
+              mkdir -p site
+              cp -R previous-site/reports site/
+            fi
+          else
+            echo "No existing gh-pages archive found. Starting first archive."
+          fi
+
+      - name: Prepare Allure archive
+        run: |
+          RUN_DATE=$(date -u +"%Y-%m-%d")
+          RUN_ID="${{ github.event.workflow_run.id }}"
+
+          mkdir -p site/reports
+          cp -R allure-report/. site/
+
+          mkdir -p "site/reports/${RUN_DATE}-${RUN_ID}"
+          cp -R allure-report/. "site/reports/${RUN_DATE}-${RUN_ID}/"
+
+          echo "Archived Allure report: ${RUN_DATE}-${RUN_ID}"
+
+      - name: Save Allure archive
+        run:
+          if [ -d previous-site ]; then
+            git worktree remove previous-site --force
+          fi
+
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+            git worktree add archive-site refs/remotes/origin/gh-pages
+          else
+            git worktree add --detach archive-site
+            cd archive-site
+            git switch --orphan gh-pages
+            git rm -rf . || true
+            cd ..
+          fi
+
+          cp -R site/. archive-site/
+
+          cd archive-site
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add .
+          git commit -m "Archive Allure report ${{ github.event.workflow_run.id }}"
+          git push origin HEAD:gh-pages
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
       - name: Upload Allure report to GitHub Pages
         uses: actions/upload-pages-artifact@v4
         with:
-          path: allure-report
+          path: site
 
       - name: Deploy Allure report to GitHub Pages
         id: deployment
