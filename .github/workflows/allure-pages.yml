@@ -26,6 +26,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
       - name: Download Allure report artifact
         uses: actions/download-artifact@v8
         with:
@@ -34,8 +37,12 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout repository
-        uses: actions/checkout@v7
+      - name: Verify downloaded Allure report
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Downloaded files:"
+          find . -maxdepth 3 -type f | sort | head -100
 
       - name: Restore archived reports
         run: |
