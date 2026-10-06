@@ -72,10 +72,8 @@ jobs:
           echo "Archived Allure report: ${RUN_DATE}-${RUN_ID}"
 
       - name: Save Allure archive
-        run:
-          if [ -d previous-site ]; then
-            git worktree remove previous-site --force
-          fi
+        run: |
+          git worktree remove previous-site --force 2>/dev/null || true
 
           if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
             git worktree add archive-site refs/remotes/origin/gh-pages
