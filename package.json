@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
-    "dotenv": "^18.0.5"
+    "dotenv": "^18.0.6"
   },
   "allowScripts": {
     "better-sqlite3@13.0.3": true
