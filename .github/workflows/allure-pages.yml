@@ -96,7 +96,7 @@ jobs:
           git push origin HEAD:gh-pages
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload Allure report to GitHub Pages
         uses: actions/upload-pages-artifact@v4
